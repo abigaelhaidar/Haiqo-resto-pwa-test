@@ -8,9 +8,9 @@ const ImageminMozjpeg = require('imagemin-mozjpeg');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // Tambahkan BundleAnalyzerPlugin hanya jika dalam mode development
-if (process.env.NODE_ENV === 'development') {
-  plugins.push(new BundleAnalyzerPlugin());
-}
+// if (process.env.NODE_ENV === 'development') {
+//   plugins.push(new BundleAnalyzerPlugin());
+// }
 
 module.exports = {
   entry: {
