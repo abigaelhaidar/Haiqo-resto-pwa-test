@@ -7,6 +7,11 @@ const ImageminWebpackPlugin = require('imagemin-webpack-plugin').default;
 const ImageminMozjpeg = require('imagemin-mozjpeg');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+// Tambahkan BundleAnalyzerPlugin hanya jika dalam mode development
+if (process.env.NODE_ENV === 'development') {
+  plugins.push(new BundleAnalyzerPlugin());
+}
+
 module.exports = {
   entry: {
     app: path.resolve(__dirname, 'src/scripts/index.js'),
@@ -98,3 +103,4 @@ module.exports = {
     new BundleAnalyzerPlugin(),
   ],
 };
+
