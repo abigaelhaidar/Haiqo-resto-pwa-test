@@ -5,14 +5,20 @@ const Home = {
   async render() {
     return `
     <picture>
-    <source media="(max-width: 600px)" srcset="./images/hero-image-small.jpg">
-      <section class="hero-section" id="landing" aria-labelledby="hero-title">
+      <!-- Jika layar max-width 800px -->
+      <source media="(max-width: 800px)" srcset="./images/hero-image_2-medium.jpg">
+      <!-- Jika layar max-width 480px -->
+      <source media="(max-width: 480px)" srcset="./images/hero-image_2-small.jpg">
+      <!-- Gambar default untuk layar lebih besar -->
+      <img src="./images/hero-image_2-large.jpg" alt="Healty Food">
+    </picture>
+
+    <section class="hero-section" id="landing" aria-labelledby="hero-title">
       <div class="hero-overlay"></div>
       <div class="hero-text">
-          <h1 id="hero-title">Healty Food</h1>
-        </div>
-      </section>
-    </picture>
+          <h1 id="hero-title">Healthy Food</h1>
+      </div>
+    </section>
   
       <!-- Restaurant Section -->
       <section id="main-content" class="restaurant-section" aria-labelledby="restaurant-title">
