@@ -7,7 +7,53 @@ const ImageminWebpackPlugin = require('imagemin-webpack-plugin').default;
 const ImageminMozjpeg = require('imagemin-mozjpeg');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-// Tambahkan BundleAnalyzerPlugin hanya jika dalam mode development
+const plugins = [
+  new HtmlWebpackPlugin({
+    filename: 'index.html',
+    template: path.resolve(__dirname, 'src/templates/index.html'),
+  }),
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: path.resolve(__dirname, 'src/public/'),
+        to: path.resolve(__dirname, 'dist/'),
+        globOptions: {
+          // CopyWebpackPlugin mengabaikan berkas yang berada di dalam folder images
+          ignore: ['**/images/**'],
+        },
+      },
+    ],
+  }),
+  new ImageminWebpackPlugin({
+    plugins: [
+      ImageminMozjpeg({
+        quality: 50,
+        progressive: true,
+      }),
+    ],
+  }),
+];
+
+// Tambahkan Workbox GenerateSW hanya pada build produksi
+if (process.env.NODE_ENV === 'production') {
+  plugins.push(
+    new WorkboxWebpackPlugin.GenerateSW({
+      swDest: './sw.bundle.js',
+      runtimeCaching: [
+        {
+          urlPattern: ({ url }) =>
+            url.href.startsWith('https://restaurant-api.dicoding.dev/'),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'resto-catalogue-v1',
+          },
+        },
+      ],
+    })
+  );
+}
+
+// Bundle analyzer untuk development jika diperlukan
 if (process.env.NODE_ENV === 'development') {
   plugins.push(new BundleAnalyzerPlugin());
 }
@@ -59,48 +105,6 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.resolve(__dirname, 'src/templates/index.html'),
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'src/public/'),
-          to: path.resolve(__dirname, 'dist/'),
-          globOptions: {
-            // CopyWebpackPlugin mengabaikan berkas yang berada di dalam folder images
-            ignore: ['**/images/**'],
-          },
-        },
-      ],
-    }),
-
-    new WorkboxWebpackPlugin.GenerateSW({
-      swDest: './sw.bundle.js',
-      runtimeCaching: [
-        {
-          urlPattern: ({ url }) =>
-            url.href.startsWith('https://restaurant-api.dicoding.dev/'),
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheName: 'resto-catalogue-v1',
-          },
-        },
-      ],
-    }),
-
-    new ImageminWebpackPlugin({
-      plugins: [
-        ImageminMozjpeg({
-          quality: 50,
-          progressive: true,
-        }),
-      ],
-    }),
-
-    new BundleAnalyzerPlugin(),
-  ],
+  plugins,
 };
 

@@ -188,6 +188,7 @@ nav.navbar-active {
     display: grid;
     justify-items: center;
     gap: 1.5rem;
+    align-items: left;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 
@@ -199,6 +200,9 @@ nav.navbar-active {
     border-radius: 8px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .restaurant-image {
@@ -227,6 +231,9 @@ nav.navbar-active {
   
   .restaurant-info {
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
   }
   
   .restaurant-rating {
@@ -339,6 +346,9 @@ nav.navbar-active {
     text-align: center;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
+    margin-top: auto;
+    align-self: flex-start;
+    margin-left: 0.6rem;
   }
   
   .btn-detail:hover {
